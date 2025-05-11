@@ -1,11 +1,13 @@
 package com.example.sample.domain.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 import com.example.sample.domain.entity.AllUser;
+import com.example.sample.domain.entity.User;
 
 @Repository
 public class UserRepository {
@@ -29,8 +31,19 @@ public class UserRepository {
                 .list();
     }
 
-    public String findById(long id) {
-        return "findById";
+    public Optional<User> findById(Long id) {
+        String sql = """
+        select
+            *
+        from
+            users
+        where
+            id = :id
+        """;
+        return jdbcClient.sql(sql)
+                .param("id", id)
+                .query(User.class)
+                .optional();
     }
 
     public String create(String user) {

@@ -33,6 +33,28 @@ src/main
 |--------|----------|-------------|
 | GET    | /home | home |
 | GET    | /health | ヘルスチェック |
+| GET    | /api/v1/users | ユーザー一覧 |
+| GET    | /api/v1/users/{id} | ユーザー詳細 |
+
+```bash
+❯ curl -s 'http://localhost:8080/api/v1/users' | jq -r '.users[0]'
+{
+  "id": 1,
+  "username": "john_doe"
+}
+
+❯ curl -s 'http://localhost:8080/api/v1/users/1' | jq .
+{
+  "id": 1,
+  "username": "john_doe",
+  "password": "password123",
+  "birthdate": "1990-01-01",
+  "firstName": "John",
+  "lastName": "Doe",
+  "createdAt": "2025-05-11T15:25:14.23981",
+  "updatedAt": "2025-05-11T15:25:14.23981"
+}
+```
 
 ## データベース
 
