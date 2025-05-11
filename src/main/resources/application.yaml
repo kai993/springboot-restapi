@@ -4,4 +4,9 @@ spring:
 app:
   name: SampleService
   key1: SampleKey
+logging: # ログ設定
+  structured:
+    format:
+      console: logstash
+      file: logstash
 
