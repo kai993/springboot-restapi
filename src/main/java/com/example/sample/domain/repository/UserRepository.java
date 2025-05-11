@@ -55,6 +55,6 @@ public class UserRepository {
     }
 
     public String delete(String user) {
-        return "update";
+        return "delete";
     }
 }
