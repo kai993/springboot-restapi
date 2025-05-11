@@ -1,12 +1,9 @@
 package com.example.sample.domain.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import lombok.Data;
 
 @Data
-public class User {
+public class AllUser {
     private long id;
     private String username;
 }

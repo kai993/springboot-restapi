@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
-import com.example.sample.domain.entity.User;
+import com.example.sample.domain.entity.AllUser;
 
 @Repository
 public class UserRepository {
@@ -16,7 +16,7 @@ public class UserRepository {
         this.jdbcClient = jdbcClient;
     }
     
-    public List<User> findAll() {
+    public List<AllUser> findAll() {
         String sql = """
         select
           id,
@@ -25,7 +25,7 @@ public class UserRepository {
           users
         """;
         return jdbcClient.sql(sql)
-                .query(User.class)
+                .query(AllUser.class)
                 .list();
     }
 
