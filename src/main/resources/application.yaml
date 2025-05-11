@@ -1,6 +1,7 @@
-# spring.application.name=demo
 spring:
   application:
     name: sample-service
-
+app:
+  name: SampleService
+  key1: SampleKey
 
