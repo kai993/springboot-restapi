@@ -9,15 +9,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.sample.application.controller.request.UserCreateRequest;
 import com.example.sample.application.controller.response.ErrorResponse;
 import com.example.sample.application.controller.response.GetAllUsersResponse;
+import com.example.sample.application.controller.response.SuccessResponse;
 import com.example.sample.domain.entity.AllUser;
 import com.example.sample.domain.entity.User;
 import com.example.sample.domain.exception.NotFoundUserException;
 import com.example.sample.domain.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -31,7 +37,7 @@ public class UserController {
         this.service = service;
     }
 
-    // 全てのユーザーを取得
+    // 全てのユーザーを取得 @TODO: コメント修正
     @GetMapping
     public GetAllUsersResponse findAll() {
         List<AllUser> users = service.findAll();
@@ -41,7 +47,7 @@ public class UserController {
                 .build();
     }
 
-    // ユーザーIDからユーザーを取得
+    // ユーザーIDからユーザーを取得 @TODO: コメント修正
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable Long id) throws Exception {
         try {
@@ -57,6 +63,27 @@ public class UserController {
             logger.error("Error occurred while fetching user: {}", id);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse("error-user-id-00002", "システムエラーが発生しました。", ""));
+        }
+    }
+
+    /**
+     * ユーザーを作成する
+     */
+    @PostMapping
+    public ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateRequest request) {
+        try {
+            // ユーザー作成
+            boolean isCreated = service.create(request);
+            if (isCreated) {
+                return ResponseEntity.ok(new SuccessResponse("ok"));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ErrorResponse("error-user-id-00003", "ユーザーの登録に失敗しました", ""));
+            }
+        } catch (Exception e) {
+            logger.error("ユーザーの登録に失敗しました", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("error-user-id-00004", "ユーザーの登録に失敗しました", ""));
         }
     }
 }

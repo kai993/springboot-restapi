@@ -37,12 +37,14 @@ src/main
 | GET    | /api/v1/users/{id} | ユーザー詳細 |
 
 ```bash
+# ユーザー一覧
 ❯ curl -s 'http://localhost:8080/api/v1/users' | jq -r '.users[0]'
 {
   "id": 1,
   "username": "john_doe"
 }
 
+# ユーザー詳細
 ❯ curl -s 'http://localhost:8080/api/v1/users/1' | jq .
 {
   "id": 1,
@@ -53,6 +55,21 @@ src/main
   "lastName": "Doe",
   "createdAt": "2025-05-11T15:25:14.23981",
   "updatedAt": "2025-05-11T15:25:14.23981"
+}
+
+# ユーザー作成
+❯ curl -X POST \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "username": "test01",
+      "password": "pass01",
+      "birthdate": "1990-01-01",
+      "firstName": "fname",
+      "lastName": "lname"
+    }' \
+    'http://localhost:8080/api/v1/users'
+{
+  "message": "ok"
 }
 ```
 

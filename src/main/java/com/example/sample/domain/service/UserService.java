@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.sample.application.controller.request.UserCreateRequest;
 import com.example.sample.domain.entity.AllUser;
 import com.example.sample.domain.entity.User;
 import com.example.sample.domain.exception.NotFoundUserException;
@@ -30,6 +31,16 @@ public class UserService {
         } else {
             throw new NotFoundUserException("User not found");
         }
+    }
+
+    /**
+     * ユーザーを作成する
+     *
+     * @param user ユーザー情報
+     * @return true: 成功, false: 失敗
+     */
+    public boolean create(UserCreateRequest req) {
+        return repository.create(req);
     }
 
     // public User save(User user) {
