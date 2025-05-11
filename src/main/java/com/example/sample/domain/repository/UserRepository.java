@@ -3,7 +3,6 @@ package com.example.sample.domain.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.postgresql.shaded.com.ongres.scram.client.ScramClient.UsernameBuildStage;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
