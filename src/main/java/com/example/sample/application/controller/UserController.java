@@ -49,7 +49,7 @@ public class UserController {
 
     // ユーザーIDからユーザーを取得 @TODO: コメント修正
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Object> findById(@PathVariable Long id) {
         try {
             // ユーザー取得
             return ResponseEntity.ok(service.findById(id));
