@@ -35,6 +35,9 @@ src/main
 | GET    | /health | ヘルスチェック |
 | GET    | /api/v1/users | ユーザー一覧 |
 | GET    | /api/v1/users/{id} | ユーザー詳細 |
+| POST   | /api/v1/users | ユーザー作成 |
+| PUT    | /api/v1/users/{id} | ユーザー更新 |
+| DELETE | /api/v1/users/{id} | ユーザー削除 |
 
 ```bash
 # ユーザー一覧
@@ -45,16 +48,16 @@ src/main
 }
 
 # ユーザー詳細
-❯ curl -s 'http://localhost:8080/api/v1/users/1' | jq .
+❯ curl -s 'http://localhost:8080/api/v1/users/11' | jq .
 {
-  "id": 1,
-  "username": "john_doe",
-  "password": "password123",
+  "id": 11,
+  "username": "test01",
+  "password": "pass01",
   "birthdate": "1990-01-01",
-  "firstName": "John",
-  "lastName": "Doe",
-  "createdAt": "2025-05-11T15:25:14.23981",
-  "updatedAt": "2025-05-11T15:25:14.23981"
+  "firstName": "fname",
+  "lastName": "lname",
+  "createdAt": "2025-05-11T23:13:45.213836",
+  "updatedAt": "2025-05-13T14:33:09.606345"
 }
 
 # ユーザー作成
@@ -71,6 +74,30 @@ src/main
 {
   "message": "ok"
 }
+
+# ユーザー更新
+❯ curl -X PUT \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "username": "test02",
+      "password": "pass02",
+      "firstName": "ffname",
+      "lastName": "llname",
+      "birthdate": "1995-01-01"
+    }' \
+    'http://localhost:8080/api/v1/users/11' | jq .
+{
+  "id": 11,
+  "username": "test02",
+  "password": "pass02",
+  "birthdate": "1995-01-01",
+  "firstName": "ffname",
+  "lastName": "llname",
+  "createdAt": "2025-05-11T23:13:45.213836",
+  "updatedAt": "2025-05-13T14:35:47.948522"
+}
+
+# ユーザー削除
 ```
 
 ## データベース
