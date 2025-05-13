@@ -14,6 +14,7 @@ import com.example.sample.application.controller.request.UserCreateRequest;
 import com.example.sample.application.controller.request.UserUpdateRequest;
 import com.example.sample.domain.entity.AllUser;
 import com.example.sample.domain.entity.User;
+import com.example.sample.domain.exception.NotFoundUserException;
 
 @Repository
 public class UserRepository {
@@ -86,8 +87,11 @@ public class UserRepository {
         return true;
     }
 
-    // TODO: 更新エラー、ユーザーが存在しない場合の処理追加
-    public Optional<User> update(Long id, UserUpdateRequest req) {
+    public Optional<User> update(Long id, UserUpdateRequest req) throws NotFoundUserException {
+        if (!isExistUser(id)) {
+            throw new NotFoundUserException("ユーザーが存在しません id : " + id);
+        }
+
         Map<String, Object> params = new HashMap<>();
         boolean isUpdate = false;
 
@@ -156,7 +160,11 @@ public class UserRepository {
                 .optional();
     }
 
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long id) throws NotFoundUserException {
+        if (!isExistUser(id)) {
+            throw new NotFoundUserException("ユーザーが存在しません id : " + id);
+        }
+
         String sql = """
         delete from users
         where id = :id
@@ -166,10 +174,19 @@ public class UserRepository {
                 .update();
 
         if (rowsAffected == 0) {
-            logger.warn("更新対象のユーザーが存在しません。id: {}", id);
+            logger.warn("更新しませんでした。id: {}", id);
         }
 
         logger.info("ユーザーを削除しました。id: {}", id);
         return true;
+    }
+
+    private boolean isExistUser(Long id) {
+        Optional<User> existingUser = findById(id);
+        if (existingUser.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

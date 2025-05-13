@@ -45,16 +45,26 @@ public class UserService {
         return repository.create(req);
     }
 
-    public User save(Long id, UserUpdateRequest req) throws SQLException {
-        Optional<User> user = repository.update(id, req);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new SQLException("ユーザーの更新に失敗しました: " + id);
+    public User save(Long id, UserUpdateRequest req) throws NotFoundUserException, SQLException {
+        try {
+            Optional<User> user = repository.update(id, req);
+            if (user.isPresent()) {
+                return user.get();
+            } else {
+                throw new SQLException("ユーザーの更新に失敗しました: " + id);
+            }
+        } catch (NotFoundUserException e) {
+            throw new NotFoundUserException("ユーザーが見つかりません: " + id, e);
+        } catch (SQLException e) {
+            throw new SQLException("ユーザーの更新に失敗しました: " + id, e);
         }
     }
 
-    public boolean deleteById(Long id) {
-        return repository.deleteById(id);
+    public boolean deleteById(Long id) throws Exception {
+        try {
+            return repository.deleteById(id);
+        } catch (NotFoundUserException e) {
+            throw new NotFoundUserException("ユーザーが見つかりません: " + id, e);
+        }
     }
 }

@@ -68,12 +68,12 @@ public class UserController {
             // ユーザーが見つからない場合
             logger.warn("User not found: {}", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse("error-user-id-00001", "ユーザーが見つかりませんでした。", "user_id: " + id));
+                    .body(new ErrorResponse("error-user-id-00001", "user not found.", "user_id: " + id));
         } catch (Exception e) {
             // その他のエラー
-            logger.error("Error occurred while fetching user: {}", id);
+            logger.error("Error occurred while fetching user: {}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("error-user-id-00002", "システムエラーが発生しました。", ""));
+                    .body(new ErrorResponse("error-user-id-00002", "system error.", ""));
         }
     }
 
@@ -85,19 +85,13 @@ public class UserController {
       */
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateRequest request) {
-        try {
-            // ユーザー作成
-            boolean isCreated = service.create(request);
-            if (isCreated) {
-                return ResponseEntity.ok(new SuccessResponse("ok"));
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ErrorResponse("error-user-id-00003", "ユーザーの登録に失敗しました", ""));
-            }
-        } catch (Exception e) {
-            logger.error("ユーザーの登録に失敗しました", e);
+        // ユーザー作成
+        boolean isCreated = service.create(request);
+        if (isCreated) {
+            return ResponseEntity.ok(new SuccessResponse("ok"));
+        } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("error-user-id-00004", "ユーザーの登録に失敗しました", ""));
+                    .body(new ErrorResponse("error-user-id-10001", "create error.", ""));
         }
     }
 
@@ -113,11 +107,16 @@ public class UserController {
         try {
             // ユーザー情報更新
             return ResponseEntity.ok(service.save(id, request));
+        } catch (NotFoundUserException e) {
+            // ユーザーが見つからない場合
+            logger.warn("ユーザーが見つかりませんでした : {}", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse("error-user-id-20001", "user not found.", "user_id: " + id));
         } catch (SQLException e) {
             // 更新エラー
             logger.error("ユーザー情報の更新に失敗しました: {}", id);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("error-user-id-00005", "ユーザー情報の更新に失敗しました", ""));
+                    .body(new ErrorResponse("error-user-id-20002", "update error.", id.toString()));
         }
     }
 
@@ -129,11 +128,23 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
-        if (service.deleteById(id)) {
-            return ResponseEntity.ok(new SuccessResponse("ok"));
-        } else {
+        try {
+            if (service.deleteById(id)) {
+                return ResponseEntity.ok(new SuccessResponse("ok"));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ErrorResponse("error-user-id-30001", "delte error.", ""));
+            }
+        } catch (NotFoundUserException e) {
+            // ユーザーが見つからない場合
+            logger.warn("ユーザーが見つかりませんでした : {}", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse("error-user-id-30002", "not found user.", "user_id: " + id));
+        } catch (Exception e) {
+            // その他のエラー
+            logger.error("Error occurred while deleting user: {}", id);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("error-user-id-00006", "ユーザーの削除に失敗しました", ""));
+                    .body(new ErrorResponse("error-user-id-30003", "system error.", ""));
         }
     }
 }
