@@ -23,3 +23,10 @@ logging:
       console: logstash
       file: logstash
 
+# OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger.html
+

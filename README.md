@@ -88,15 +88,7 @@ db1=# select * from users;
 
 ## API一覧
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | /home | home |
-| GET    | /health | ヘルスチェック |
-| GET    | /api/v1/users | ユーザー一覧 |
-| GET    | /api/v1/users/{id} | ユーザー詳細 |
-| POST   | /api/v1/users | ユーザー作成 |
-| PUT    | /api/v1/users/{id} | ユーザー更新 |
-| DELETE | /api/v1/users/{id} | ユーザー削除 |
+http://localhost:8080/swagger-ui/index.html#/
 
 ```bash
 # ユーザー一覧
