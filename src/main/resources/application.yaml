@@ -1,10 +1,23 @@
 spring:
   application:
     name: sample-service
+  # PostgreSQLの設定
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db1
+    username: test
+    password: ${DB_PASSWORD} # パスワードは環境変数から取得
+    driver-class-name: org.postgresql.Driver
+  jdbc:
+    template:
+      query-timeout: 30 # 30秒でタイムアウト
+
+# appの設定
 app:
   name: SampleService
   key1: SampleKey
-logging: # ログ設定
+
+# ログの設定
+logging:
   structured:
     format:
       console: logstash

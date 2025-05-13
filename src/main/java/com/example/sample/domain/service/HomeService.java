@@ -1,11 +1,8 @@
 package com.example.sample.domain.service;
 
-import java.time.LocalTime;
-
 import org.springframework.stereotype.Service;
 
 import com.example.sample.config.AppProperties;
-import com.example.sample.domain.exception.SampleServiceException;
 import com.example.sample.domain.repository.HomeRepository;
 
 @Service
