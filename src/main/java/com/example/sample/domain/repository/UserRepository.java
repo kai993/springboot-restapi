@@ -80,6 +80,7 @@ public class UserRepository {
         return true;
     }
 
+    // TODO: 更新エラー、ユーザーが存在しない場合の処理追加
     public Optional<User> update(Long id, UserUpdateRequest req) {
         Map<String, Object> params = new HashMap<>();
         boolean isUpdate = false;
@@ -132,7 +133,6 @@ public class UserRepository {
             return Optional.empty();
         }
 
-        logger.info("SQL: {}", updateSql.toString());
         // 更新
         jdbcClient.sql(updateSql.toString())
             .params(params)
