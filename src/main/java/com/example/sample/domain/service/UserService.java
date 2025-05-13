@@ -50,7 +50,7 @@ public class UserService {
         if (user.isPresent()) {
             return user.get();
         } else {
-            throw new SQLException();
+            throw new SQLException("ユーザーの更新に失敗しました: " + id);
         }
     }
 
