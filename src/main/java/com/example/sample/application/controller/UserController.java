@@ -2,12 +2,12 @@ package com.example.sample.application.controller;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,6 @@ import com.example.sample.application.controller.response.ErrorResponse;
 import com.example.sample.application.controller.response.GetAllUsersResponse;
 import com.example.sample.application.controller.response.SuccessResponse;
 import com.example.sample.domain.entity.AllUser;
-import com.example.sample.domain.entity.User;
 import com.example.sample.domain.exception.NotFoundUserException;
 import com.example.sample.domain.service.UserService;
 
@@ -103,6 +102,19 @@ public class UserController {
             logger.error("ユーザー情報の更新に失敗しました: {}", id);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse("error-user-id-00005", "ユーザー情報の更新に失敗しました", ""));
+        }
+    }
+
+    /**
+     * ユーザーを削除する
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+        if (service.deleteById(id)) {
+            return ResponseEntity.ok(new SuccessResponse("ok"));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("error-user-id-00006", "ユーザーの削除に失敗しました", ""));
         }
     }
 }

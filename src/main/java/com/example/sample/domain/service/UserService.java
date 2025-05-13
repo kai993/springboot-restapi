@@ -54,7 +54,7 @@ public class UserService {
         }
     }
 
-    // public boolean deleteById(Long id) {
-    //     return true;
-    // }
+    public boolean deleteById(Long id) {
+        return repository.deleteById(id);
+    }
 }

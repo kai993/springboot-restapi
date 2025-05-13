@@ -152,7 +152,20 @@ public class UserRepository {
                 .optional();
     }
 
-    public String delete(String user) {
-        return "delete";
+    public boolean deleteById(Long id) {
+        String sql = """
+        delete from users
+        where id = :id
+        """;
+        int rowsAffected = jdbcClient.sql(sql)
+                .param("id", id)
+                .update();
+
+        if (rowsAffected == 0) {
+            logger.warn("更新対象のユーザーが存在しません。id: {}", id);
+        }
+
+        logger.info("ユーザーを削除しました。id: {}", id);
+        return true;
     }
 }
