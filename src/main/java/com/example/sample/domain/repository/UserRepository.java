@@ -41,7 +41,13 @@ public class UserRepository {
     public Optional<User> findById(Long id) {
         String sql = """
         select
-            *
+            id,
+            username,
+            birthdate,
+            first_name,
+            last_name,
+            created_at,
+            updated_at
         from
             users
         where
@@ -122,8 +128,6 @@ public class UserRepository {
         }
         updateSql.append("updated_at = now() ");
 
-        // SQL分の末尾のカンマ削除
-        // sql.setLength(sql.length() - 2);
         updateSql.append("where id = :id");
         params.put("id", id);
         // ---------- SQL生成 ----------

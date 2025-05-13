@@ -9,7 +9,6 @@ import lombok.Data;
 public class User {
     private Long id;
     private String username;
-    private String password; // @TODO: 暗号化する
     private LocalDate birthdate;
     private String firstName;
     private String lastName;
