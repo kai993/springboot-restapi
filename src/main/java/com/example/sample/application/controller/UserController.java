@@ -39,7 +39,11 @@ public class UserController {
         this.service = service;
     }
 
-    // 全てのユーザーを取得 @TODO: コメント修正
+    /**
+     * ユーザー一覧(id, username)を取得する
+     *
+     * @return ユーザー一覧
+     */
     @GetMapping
     public GetAllUsersResponse findAll() {
         List<AllUser> users = service.findAll();
@@ -49,7 +53,12 @@ public class UserController {
                 .build();
     }
 
-    // ユーザーIDからユーザーを取得 @TODO: コメント修正
+    /**
+     * ユーザー情報を取得する
+     *
+     * @param id ユーザーID
+     * @return ユーザー情報
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable Long id) {
         try {
@@ -69,8 +78,11 @@ public class UserController {
     }
 
     /**
-     * ユーザーを作成する
-     */
+      * ユーザーを作成する
+      *
+      * @param request ユーザー情報
+      * @return ResponseEntity
+      */
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateRequest request) {
         try {
@@ -91,6 +103,10 @@ public class UserController {
 
     /**
      * ユーザー情報を更新する
+     *
+     * @param id ユーザーID
+     * @param request ユーザー情報
+     * @return 更新後のユーザー情報
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest request) {
@@ -107,6 +123,9 @@ public class UserController {
 
     /**
      * ユーザーを削除する
+     *
+     * @param id ユーザーID
+     * @return ResponseEntity
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
