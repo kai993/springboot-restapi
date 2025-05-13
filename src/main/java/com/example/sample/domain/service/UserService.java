@@ -1,11 +1,13 @@
 package com.example.sample.domain.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.example.sample.application.controller.request.UserCreateRequest;
+import com.example.sample.application.controller.request.UserUpdateRequest;
 import com.example.sample.domain.entity.AllUser;
 import com.example.sample.domain.entity.User;
 import com.example.sample.domain.exception.NotFoundUserException;
@@ -43,10 +45,15 @@ public class UserService {
         return repository.create(req);
     }
 
-    // public User save(User user) {
-    //     return new User();
-    // }
-    //
+    public User save(Long id, UserUpdateRequest req) throws SQLException {
+        Optional<User> user = repository.update(id, req);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new SQLException();
+        }
+    }
+
     // public boolean deleteById(Long id) {
     //     return true;
     // }

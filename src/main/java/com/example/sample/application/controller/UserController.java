@@ -1,5 +1,6 @@
 package com.example.sample.application.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,11 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sample.application.controller.request.UserCreateRequest;
+import com.example.sample.application.controller.request.UserUpdateRequest;
 import com.example.sample.application.controller.response.ErrorResponse;
 import com.example.sample.application.controller.response.GetAllUsersResponse;
 import com.example.sample.application.controller.response.SuccessResponse;
@@ -84,6 +87,22 @@ public class UserController {
             logger.error("ユーザーの登録に失敗しました", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse("error-user-id-00004", "ユーザーの登録に失敗しました", ""));
+        }
+    }
+
+    /**
+     * ユーザー情報を更新する
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest request) {
+        try {
+            // ユーザー情報更新
+            return ResponseEntity.ok(service.save(id, request));
+        } catch (SQLException e) {
+            // 更新エラー
+            logger.error("ユーザー情報の更新に失敗しました: {}", id);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("error-user-id-00005", "ユーザー情報の更新に失敗しました", ""));
         }
     }
 }
