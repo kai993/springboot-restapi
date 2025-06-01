@@ -78,11 +78,11 @@ public class UserController {
     }
 
     /**
-      * ユーザーを作成する
-      *
-      * @param request ユーザー情報
-      * @return ResponseEntity
-      */
+     * ユーザーを作成する
+     *
+     * @param request ユーザー情報
+     * @return ResponseEntity
+     */
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateRequest request) {
         // ユーザー作成
@@ -98,7 +98,7 @@ public class UserController {
     /**
      * ユーザー情報を更新する
      *
-     * @param id ユーザーID
+     * @param id      ユーザーID
      * @param request ユーザー情報
      * @return 更新後のユーザー情報
      */
@@ -148,4 +148,3 @@ public class UserController {
         }
     }
 }
-

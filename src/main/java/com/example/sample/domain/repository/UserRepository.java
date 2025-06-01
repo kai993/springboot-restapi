@@ -19,13 +19,13 @@ import com.example.sample.domain.exception.NotFoundUserException;
 @Repository
 public class UserRepository {
     Logger logger = LoggerFactory.getLogger(UserRepository.class);
-    
+
     private final JdbcClient jdbcClient;
 
     public UserRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
-    
+
     public List<AllUser> findAll() {
         String sql = """
         select

@@ -10,6 +10,9 @@ spring:
   jdbc:
     template:
       query-timeout: 30 # 30秒でタイムアウト
+  # グレースフルシャットダウン
+  lifecycle:
+    timeout-per-shutdown-phase: "20s"
 
 # appの設定
 app:
